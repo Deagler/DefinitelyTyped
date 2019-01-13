@@ -8,6 +8,33 @@ import GcmService = require('./gcmservice');
 import MpnsService = require('./mpnservice');
 import WnsService = require('./wnsservice');
 
+declare interface NotificationHubInstallation {
+    installationId: string;
+    readonly lastActiveOn?: string;
+    readonly expirationTime?: string;
+    readonly lastUpdate?: string;
+    platform: string;
+    pushChannel: string;
+    readonly expiredPushChannel?: string;
+    tags?: Array<string>;
+    templates?: {
+        [name: string]: {
+            body: string;
+            headers?: any;
+            expiry?: string;
+            tags?: Array<string>;
+        };
+    };
+    secondaryTile?: {
+        [titleId: string]: {
+            pushChannel: string;
+            tags?: Array<string>;
+            templates?: any;
+        };
+    };
+}
+
+
 declare class NotificationHubService {
     constructor(hubName: string,
                 endpointOrConnectionString: string,
@@ -29,10 +56,10 @@ declare class NotificationHubService {
                 options: { headers: object },
                 callback: Callback): void;
 
-    public createOrUpdateInstallation(installation: string,
+    public createOrUpdateInstallation(installation: NotificationHubInstallation,
                                       callback: Callback): void;
 
-    public createOrUpdateInstallation(installation: string,
+    public createOrUpdateInstallation(installation: NotificationHubInstallation,
                                       options: any,
                                       callback: Callback): void;
 
